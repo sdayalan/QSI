@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		90AB1C9B2139B42100D13202 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB1C9A2139B42100D13202 /* TableViewCell.swift */; };
 		90F20C29213815D3002439C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F20C28213815D3002439C3 /* AppDelegate.swift */; };
 		90F20C2B213815D3002439C3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F20C2A213815D3002439C3 /* ViewController.swift */; };
 		90F20C2E213815D3002439C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90F20C2C213815D3002439C3 /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		90AB1C9A2139B42100D13202 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		90F20C25213815D3002439C3 /* QSI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QSI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90F20C28213815D3002439C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		90F20C2A213815D3002439C3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				90F20C31213815D5002439C3 /* LaunchScreen.storyboard */,
 				90F20C34213815D5002439C3 /* Info.plist */,
 				90F20C4821381AB7002439C3 /* QSIData.swift */,
+				90AB1C9A2139B42100D13202 /* TableViewCell.swift */,
 			);
 			path = QSI;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				90F20C2B213815D3002439C3 /* ViewController.swift in Sources */,
+				90AB1C9B2139B42100D13202 /* TableViewCell.swift in Sources */,
 				90F20C29213815D3002439C3 /* AppDelegate.swift in Sources */,
 				90F20C4921381AB7002439C3 /* QSIData.swift in Sources */,
 			);

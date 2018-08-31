@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     
     @IBOutlet private weak var speakButton: UIButton!
     @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var tableView: UITableView!
     
     fileprivate var wordData: [WordData]?
     fileprivate let audioEngine = AVAudioEngine()
@@ -21,6 +22,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         retrieveData()
+        tableView.delegate = self
+        tableView.dataSource = self
         requestSpeechAuthorization()
     }
     
@@ -58,7 +61,10 @@ extension ViewController {
                 if let `data` = data {
                     do {
                         let qsiData = try JSONDecoder().decode(QSIData.self, from: data)
-                        self.wordData = qsiData.dictionary
+                        self.wordData = qsiData.sorted
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
                     } catch let error {
                         print(error.localizedDescription)
                     }
@@ -134,6 +140,37 @@ extension ViewController {
         audioEngine.stop()
         request.endAudio()
         audioEngine.inputNode.removeTap(onBus: 0);
+    }
+}
+
+extension ViewController: UITableViewDelegate {
+    // To-Do
+}
+
+extension ViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let `wordData` = wordData else {
+            return 0
+        }
+        return wordData.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let textCellIdentifier = "Cell"
+        let cell = tableView.dequeueReusableCell(withIdentifier: textCellIdentifier, for: indexPath) as! TableViewCell
+        
+        let row = indexPath.row
+        if let `wordData` = wordData {
+            cell.wordLabel.text = wordData[row].word
+            cell.frequencyLabel.text = "\(wordData[row].frequency)"
+        }
+        
+        return cell
     }
 }
 
