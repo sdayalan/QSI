@@ -162,11 +162,12 @@ extension ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let textCellIdentifier = "Cell"
-        let cell = tableView.dequeueReusableCell(withIdentifier: textCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: textCellIdentifier, for: indexPath) as! TableViewCell
         
         let row = indexPath.row
         if let `wordData` = wordData {
-            cell.textLabel?.text = "\(wordData[row].word) - \(wordData[row].frequency)"
+            cell.wordLabel.text = wordData[row].word
+            cell.frequencyLabel.text = "\(wordData[row].frequency)"
         }
         
         return cell
