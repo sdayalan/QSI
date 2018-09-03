@@ -17,5 +17,5 @@ struct QSIData: Decodable {
 
 struct WordData: Decodable {
     let word: String
-    let frequency: Int
+    var frequency: Int
 }
