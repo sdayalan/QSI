@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var tableView: UITableView!
     
-    fileprivate var wordData: [WordData]?
+    fileprivate var wordData = [WordData]()
     fileprivate let audioEngine = AVAudioEngine()
     fileprivate let request = SFSpeechAudioBufferRecognitionRequest()
     fileprivate var recongnitionTask: SFSpeechRecognitionTask?
@@ -28,9 +28,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction private func speakButtonTapped(_ sender: UIButton) {
+        // Tap on Speak to record the voice, stop to recognize. This will ensure we can handle word & phrases
         if audioEngine.isRunning {
             speakButton.setTitle("Speak", for: .normal)
-            textLabel.text = ""
             cancelRecording()
         } else {
             speakButton.setTitle("Stop", for: .normal)
@@ -72,6 +72,20 @@ extension ViewController {
             })
             
             dataTask.resume()
+        }
+    }
+}
+
+// MARK: - Update tableView when spoken phrase is a match
+extension ViewController {
+    
+    fileprivate func match(_ text: String) {
+        if let index = wordData.index(where: { $0.word.lowercased() == text.lowercased() }) {
+            wordData[index].frequency += 1
+            wordData = wordData.sorted(by: { $0.frequency > $1.frequency })
+            tableView.reloadData()
+        } else {
+            textLabel.text = "\(text) is not available"
         }
     }
 }
@@ -126,7 +140,9 @@ extension ViewController {
         
         recongnitionTask = myRecognizer.recognitionTask(with: request, resultHandler: { result, error in
             if let `result` = result {
-                self.textLabel.text = result.bestTranscription.formattedString
+                let resultString = result.bestTranscription.formattedString
+                self.textLabel.text = resultString
+                self.match(resultString)
             }
             
             if let `error` = error {
@@ -140,6 +156,7 @@ extension ViewController {
         audioEngine.stop()
         request.endAudio()
         audioEngine.inputNode.removeTap(onBus: 0);
+        textLabel.text = ""
     }
 }
 
@@ -154,9 +171,6 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let `wordData` = wordData else {
-            return 0
-        }
         return wordData.count
     }
     
@@ -165,10 +179,8 @@ extension ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: textCellIdentifier, for: indexPath) as! TableViewCell
         
         let row = indexPath.row
-        if let `wordData` = wordData {
-            cell.wordLabel.text = wordData[row].word
-            cell.frequencyLabel.text = "\(wordData[row].frequency)"
-        }
+        cell.wordLabel.text = wordData[row].word
+        cell.frequencyLabel.text = "\(wordData[row].frequency)"
         
         return cell
     }
